@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-nginx
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: my-nginx-pods-label
+  template:
+    metadata:
+      name: my-nginx-pod
+      labels:
+       app: my-nginx-pods-label
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+
+# label은 쿠버네티스 리소스의 부가적인 정보를 표현할 수 있을 뿐만 아니라, 서로 다른 오브젝트가 서로를 찾아야 할 때 사용되기도 한다.
+# ReplicaSet의 경우 spec.selector.matchLabels에 정의된 라벨을 통해 생성해야하는 pod를 찾는다.
+# 즉, app: my-nginx-pods-label 라벨을 가진 pod의 개수가 spec.replicas 에 나온 숫자와 일치하지 않을 경우 spec.template 항목을 참조해서 pod를 생성한다.
